@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+   <style>
+
+   </style>
+    <title>test</title>
+    <script src="./qwebchannel.js"></script>
+  </head>
+  <body id="body">
+
+    <div id="menu">
+      <h3 style="color:black;">file operate tool help </h3>
+    </div>
+
+    <div>
+      <button id="add">添加</button>
+      <button id="decompress">解压到</button>
+    </div>
+    
+    
+
+    <input type="button" value="decompress" onclick="onDecompress()">
+    <br />
+    <input draggable="true" type="button" value="close" onclick="onClose()">
+    <br />
+    <input type="button" value="show_dialog" onclick="onMinimised()">
+    <br />
+    <input type="button" value="max" onclick="onMaximised()">
+    <br />
+    <input type="button" value="normal" onclick="onNormal()">
+
+    <div id="target1" draggable="true" ondragstart="onDragStartHandler(event)" ondropenter="onDragEnterHandler(event)
+    ondrop="onDropHandler(event)" on>
+      This text <strong>may</strong> be dragged.
+    </div>
+
+
+    <p id="demo"></p>
+
+
+
+    <script>
+      new QWebChannel(qt.webChannelTransport, function(channel) {
+        window.i_decompressor = channel.objects.i_decompressor;
+        window.i_gtz_gui_event = channel.objects.i_gtz_gui_event;
+      })
+
+      function onDecompress() {
+        if (i_decompressor) {
+          i_decompressor.execute("{\"filename\": \"test.txt\"}", "notifyFinished")
+        }
+      }
+
+      function notifyFinished(info) {
+        alert(info + "decompress finished!");
+      }
+
+      function onClose() {
+        if (i_gtz_gui_event) {
+          i_gtz_gui_event.close();
+        }
+      }
+
+      function onMinimised() {
+        if (i_gtz_gui_event) {
+          i_gtz_gui_event.minimized();
+        }
+      }
+
+      function onMaximised() {
+        if (i_gtz_gui_event) {
+          i_gtz_gui_event.maximized();
+        }
+      }
+
+      function onNormal() {
+        if (i_gtz_gui_event) {
+          i_gtz_gui_event.normal();
+        }
+      }
+
+      function onDropEnterHandler(event) {
+        document.getElementById("demo").innerHTML = "onDropEnterHandler";
+
+        event.preventDefault();
+      }
+
+      function onDropHandler(event) {
+        document.getElementById("demo").innerHTML = "onDropHandler";
+        console.log(event.target.className);
+        document.getElementById("demo").innerHTML = event.target.className;
+      }
+
+      function onDragStartHandler(currentEvent) {
+
+        //currentEvent.preventDefault();
+        document.getElementById("demo").innerHTML = "DragStartHandler1111";
+        //currentEvent.dataTransfer.mozSetDataAt("application/x-moz-file", "env_var", 0);
+        currentEvent.dataTransfer.setData("text/plain", "file:///home/nil/Desktop/gtz_gui/env_var");
+        currentEvent.dataTransfer.setData("text/uri-list", "file:///home/nil/Desktop/test/file_A");
+        currentEvent.dataTransfer.dropEffect = "copy";
+        currentEvent.dataTransfer.effectAllowed = "copy";
+      }
+
+
+    //首先通过重写dragover/dragenter事件使得元素成为可以放置的元素
+    target1.ondragover=function(event)
+    {
+      event.preventDefault();
+    };
+
+    target1.ondragenter=function(event)
+    {
+      event.preventDefault();
+    };
+
+    function output(text)
+    {
+      document.getElementById("demo").textContent += text;
+    }
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+/*  .buttonClass
+  {
+    border-right: blue 1px solid;
+    border-top: blue 1px solid;
+    font-size: 9pt;
+    background-image: url(/Images/back.gif);
+    vertical-align: middle;
+    border-left: blue 1px solid;
+    cursor: hand;
+    color: #000000;
+    border-bottom: blue 1px solid;
+    font-family: "宋体";
+    text-align: center;
+  }*/
+    #menu {
+        background-color:#eeeeee;
+        color:green;
+        text-align:left;
+    }
+
+    #toolbar1 {
+        background-color:#aaaaaa;
+        color:green;
+        text-align:left;
+        padding:5px; 
+    }
+    
+    #section {
+        float:left;       
+    }
+    #debug {
+        background-color:#aaaa;
+        color:red;
+        clear:both;
+        text-align:center;   
+    }
+    
+    #ok {
+        background-color:#aaaa;
+        color:black;
+        clear:both;
+        text-align:center;
+     
+    }
+
+  </style>
+  <title>gtz</title>
+  <script src="./qwebchannel.js"></script>
+</head>
+<body id="body">
+
+  <div >
+    <p id="menu" style="color:black;">file operate tool help </p>
+  </div>
+
+  <div id="toolbar">
+    <button id="add" onclick="onAdd()" style=" width:50px; height:50px; background:url(./img/new.png); "></button>
+    <button id="decompress" onclick="onDecompress()" style=" width:50px; height:50px; background:url(./img/decompress.png); "></button>
+    <button id="test" onclick="onShowTestDialog()" style=" width:50px; height:50px; background:url(./img/test.png);"></button>
+  </div>
+  <div id="debug">
+  </div>
+
+  <script>
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+      window.i_decompressor = channel.objects.i_decompressor;
+      window.i_gtz_gui_event = channel.objects.i_gtz_gui_event;})
+
+    function onAdd()
+    {
+      document.getElementById("debug").textContent = "onAdd ";
+    }
+
+    function onDecompress()
+    {
+      document.getElementById("debug").textContent = "onDecompress ";
+    }
+
+    function onShowTestDialog()
+    {
+        document.getElementById("debug").textContent = "onShowTestDialog ";
+        i_gtz_gui_event.show_test_dialog_now();
+    }
+
+  </script>
+  </body>
+</html>

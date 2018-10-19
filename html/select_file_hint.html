@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#header {
+    background-color:#eeeeee;
+    color:green;
+    text-align:center;
+    padding:5px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;  
+    -khtml-user-select: none;  
+    -moz-user-select: none;  
+    -ms-user-select: none;  
+    user-select: none;  
+}
+
+#section {
+    float:left;
+    padding:10px;        
+}
+#footer {
+    color:red;
+    clear:both;
+    text-align:center;
+   padding:5px;      
+}
+
+#ok {
+    background-color:#aaaa;
+    color:black;
+    clear:both;
+    text-align:center;
+   padding:5px;      
+}
+</style>
+    <script src="./qwebchannel.js"></script>
+</head>
+
+<body>
+
+<div id="header" onmousedown="mousePressEvent(event)" onmouseup="mouseReleaseEvent(event)" onmousemove="mouseMoveEvent(event)" onmouseleave="mouseLeaveEvent(event)">
+<h3 dragable="false">GTZ Enterprise</h3>
+</div>
+
+<div id="section">
+<h3>please select at least one file.</h3>
+<center><button id="ok" onclick="onOk()">OK</button></center>
+</div>
+
+<div id="footer">
+
+</div>
+<br />
+<script>
+new QWebChannel(qt.webChannelTransport, function(channel) {
+        window.i_gtz_gui_event = channel.objects.i_gtz_gui_event;
+      })
+
+    var mouse_press = false;
+    var screenX = 0;
+    var screenY = 0;
+    var count1 = 0;
+
+    function onOk()
+    {
+        i_gtz_gui_event.close();
+        //document.getElementById("footer").textContent = "press ok.";
+    }
+
+    function mousePressEvent(event)
+    {
+        if (event.button == 0) //0 is left, 2 is right
+        {
+            mouse_press = true;
+            clientX = event.clientX;
+            clientY = event.clientY;
+            //document.getElementById("footer").textContent = "mouse left button down.";
+        }
+        
+        //i_gtz_gui_event.mousePressEvent();
+    }
+
+    function mouseReleaseEvent(event)
+    {
+        if (event.button == 0)
+            mouse_press = false;
+    }
+
+
+    function mouseLeaveEvent(event)
+    {
+        mouse_press = false;
+        //if (event.button == 0)
+        //    document.getElementById("footer").textContent = "mouse leave.";
+    }
+
+    function mouseMoveEvent(event)
+    {
+        if (mouse_press == true)
+        {
+            var x = event.screenX - clientX;
+            var y = event.screenY - clientY;
+            //var json_position = "{\"x\":" + x + ",\"y\":" + y + "}";
+            //document.getElementById("footer").textContent = json_position;
+            i_gtz_gui_event.move(x, y);
+        }
+    }
+
+
+
+</script>
+</body>
+</html>
